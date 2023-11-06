@@ -7,13 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "customers")
 public class Customer {
 
@@ -26,5 +27,11 @@ public class Customer {
 
   @Column(nullable = false, unique = true)
   private String email;
+  public Customer(Long id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
+
 
 }
