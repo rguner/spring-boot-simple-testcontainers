@@ -35,6 +35,9 @@ class CustomerControllerWithServiceConnectionTest {
           "postgres:15-alpine"
   );
 
+  /*
+  With the Testcontainers JUnit 5 Extension,
+  we can use @Testcontainers and @Container to automatically start and stop the container.
   @BeforeAll
   static void beforeAll() {
     postgres.start();
@@ -44,6 +47,7 @@ class CustomerControllerWithServiceConnectionTest {
   static void afterAll() {
     postgres.stop();
   }
+   */
 
 
   @Autowired
