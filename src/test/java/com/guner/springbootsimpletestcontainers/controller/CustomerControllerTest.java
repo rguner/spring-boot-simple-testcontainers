@@ -8,9 +8,12 @@ import com.guner.springbootsimpletestcontainers.repository.CustomerRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +23,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
+//@Disabled
 class CustomerControllerTest {
 
   @LocalServerPort
@@ -39,12 +44,15 @@ class CustomerControllerTest {
     postgres.stop();
   }
 
+  /*
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
     registry.add("spring.datasource.url", postgres::getJdbcUrl);
     registry.add("spring.datasource.username", postgres::getUsername);
     registry.add("spring.datasource.password", postgres::getPassword);
   }
+
+   */
 
   @Autowired
   CustomerRepository customerRepository;
@@ -53,6 +61,14 @@ class CustomerControllerTest {
   void setUp() {
     RestAssured.baseURI = "http://localhost:" + port;
     customerRepository.deleteAll();
+  }
+
+  @Test
+  void logTestContainerDetails() {
+    log.info("____________ Test container details ____________");
+    log.info("Jdbc Url: {} ", postgres.getJdbcUrl());
+    log.info("Username: {} ", postgres.getUsername());
+    log.info("Password: {} ", postgres.getPassword());
   }
 
   @Test
@@ -71,4 +87,5 @@ class CustomerControllerTest {
       .statusCode(200)
       .body(".", hasSize(2));
   }
+
 }
