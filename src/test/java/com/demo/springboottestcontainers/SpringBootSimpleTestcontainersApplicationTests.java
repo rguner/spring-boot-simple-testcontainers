@@ -1,4 +1,4 @@
-package com.guner.springbootsimpletestcontainers;
+package com.demo.springboottestcontainers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

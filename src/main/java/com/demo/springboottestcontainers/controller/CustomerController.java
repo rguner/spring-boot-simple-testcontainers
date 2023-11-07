@@ -1,9 +1,9 @@
-package com.guner.springbootsimpletestcontainers.controller;
+package com.demo.springboottestcontainers.controller;
 
 import java.util.List;
 
-import com.guner.springbootsimpletestcontainers.entity.Customer;
-import com.guner.springbootsimpletestcontainers.repository.CustomerRepository;
+import com.demo.springboottestcontainers.entity.Customer;
+import com.demo.springboottestcontainers.repository.CustomerRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

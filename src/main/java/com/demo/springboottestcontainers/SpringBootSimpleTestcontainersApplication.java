@@ -1,4 +1,4 @@
-package com.guner.springbootsimpletestcontainers;
+package com.demo.springboottestcontainers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

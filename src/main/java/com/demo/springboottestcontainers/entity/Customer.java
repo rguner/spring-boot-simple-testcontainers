@@ -1,4 +1,4 @@
-package com.guner.springbootsimpletestcontainers.entity;
+package com.demo.springboottestcontainers.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,38 +1,41 @@
-package com.guner.springbootsimpletestcontainers.controller;
+package com.demo.springboottestcontainers.controller;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasSize;
-
-import com.guner.springbootsimpletestcontainers.entity.Customer;
-import com.guner.springbootsimpletestcontainers.repository.CustomerRepository;
+import com.demo.springboottestcontainers.entity.Customer;
+import com.demo.springboottestcontainers.repository.CustomerRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.List;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
-class CustomerControllerTest {
+@Testcontainers
+class CustomerControllerWithServiceConnectionTest {
 
   @LocalServerPort
   private Integer port;
-
+  @Container
+  @ServiceConnection // With @ServiceConnection annotation we can remove @DynamicPropertySource annotation.
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-    "postgres:15-alpine"
+          "postgres:15-alpine"
   );
 
+  /*
+  With the Testcontainers JUnit 5 Extension,
+  we can use @Testcontainers and @Container to automatically start and stop the container.
   @BeforeAll
   static void beforeAll() {
     postgres.start();
@@ -42,24 +45,8 @@ class CustomerControllerTest {
   static void afterAll() {
     postgres.stop();
   }
-
-  /**
-   *
-   * Before spring-boot 3.1 we should have used @DynamicPropertySource annotation to set dynamic properties.
-   * With @ServiceConnection annotation we can remove @DynamicPropertySource annotation.
-   * If we didn't give these parameters test application couldn't connect to test database or connects to default database in application.yaml
-   * org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine suitable jdbc url
-   *   or
-   *   Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'javax.persistence.jdbc.url'
-   *
    */
 
-  @DynamicPropertySource
-  static void configureProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", postgres::getJdbcUrl);
-    registry.add("spring.datasource.username", postgres::getUsername);
-    registry.add("spring.datasource.password", postgres::getPassword);
-  }
 
   @Autowired
   CustomerRepository customerRepository;
